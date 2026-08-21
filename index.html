@@ -5,7 +5,66 @@
         <title>WANT TO</title>
     </head>
     <body>
-        <h1>想·要</h1>
-        <p>我想做什么？</p>
+        <header>
+            <h1>想·要</h1>
+            <blockquote>
+                <p>不要为明天忧虑，因为明天自有明天的忧虑。</p>
+                <cite>——马太福音 6:34</cite>
+            </blockquote>
+        </header>
+
+        <main>
+            <section>
+                <h2>此刻，你想做什么？</h2>
+                
+                <label for="thing-input">写下一件事</label>
+                <input 
+                type="thing-input"
+                type="text"
+                placeholder="写下一件此刻想到的事……"
+                >
+
+                <fieldset>
+                    <legend>这件事属于哪一种？</legend>
+
+                    <label>
+                        <input 
+                        type="radio"
+                        name="thing-type"
+                        value="want"
+                        checked
+                        >
+                        WANT
+                    </label>
+
+                    <label>
+                        <input 
+                        type="radio"
+                        name="thing-type"
+                        value="need"
+                        >
+                        NEED
+                    </label>
+                </fieldset>
+
+                <button type="button">记下来</button>
+            </section>
+
+            <section>
+                <h2>我想做</h2>
+
+                <ul>
+                    <li>push一次</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>我需要做</h2>
+
+                <ul>
+                    <li>12点前睡觉</li>
+                </ul>
+            </section>
+        </main>
     </body>
 </html>
