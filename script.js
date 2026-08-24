@@ -1,9 +1,37 @@
 const thingInput = document.querySelector("#thing-input");
-const saveButton = document.querySelector("#save-button");
+const thingForm = document.querySelector("#thing-form");
 const wantList = document.querySelector("#want-list");
 const needList = document.querySelector("#need-list");
 
-saveButton.addEventListener("click", function () {
+const savedThings = localStorage.getItem("things");
+
+let things = [];
+
+if (savedThings !== null) {
+    things = JSON.parse(savedThings);
+}
+
+console.log(things);
+
+function displayThing(thing) {
+        const listItem = document.createElement("li");
+        listItem.textContent = thing.text;
+
+        if (thing.type === "want") {
+            wantList.appendChild(listItem);
+        }
+        else {
+            needList.appendChild(listItem);
+        }
+    }
+
+    things.forEach(function (thing) {
+        displayThing(thing);
+    });
+
+thingForm.addEventListener("submit", function (event) {
+    event.preventDefault();
+
     const thingText = thingInput.value.trim();
 
     if (thingText === "") {
@@ -14,15 +42,16 @@ saveButton.addEventListener("click", function () {
         'input[name="thing-type"]:checked'
     ).value;
 
-    const listItem = document.createElement("li");
-    listItem.textContent = thingText;
+    const thing = {
+        text: thingText,
+        type: selectedType
+    };
 
-    if (selectedType === "want") {
-        wantList.appendChild(listItem);
-    }
-    else {
-        needList.appendChild(listItem);
-    }
+    things.push(thing);
+    localStorage.setItem("things", JSON.stringify(things));
+    console.log(things);
+
+    displayThing(thing);
 
     thingInput.value = "";
 });

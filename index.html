@@ -18,37 +18,41 @@
             <section>
                 <h2>此刻，你想做什么？</h2>
                 
-                <label for="thing-input">写下一件事</label>
-                <input 
-                id="thing-input"
-                type="text"
-                placeholder="写下一件此刻想到的事……"
-                >
+                <form id="thing-form">
 
-                <fieldset>
-                    <legend>这件事属于哪一种？</legend>
+                    <label for="thing-input">写下一件事</label>
+                    <input 
+                    id="thing-input"
+                    type="text"
+                    placeholder="写下一件此刻想到的事……"
+                    >
 
-                    <label>
-                        <input 
-                        type="radio"
-                        name="thing-type"
-                        value="want"
-                        checked
-                        >
-                        WANT
-                    </label>
+                    <fieldset>
+                        <legend>这件事属于哪一种？</legend>
 
-                    <label>
-                        <input 
-                        type="radio"
-                        name="thing-type"
-                        value="need"
-                        >
-                        NEED
-                    </label>
-                </fieldset>
+                        <label>
+                            <input 
+                            type="radio"
+                            name="thing-type"
+                            value="want"
+                            checked
+                            >
+                            WANT
+                        </label>
 
-                <button id="save-button" type="button">记下来</button>
+                        <label>
+                            <input 
+                            type="radio"
+                            name="thing-type"
+                            value="need"
+                            >
+                            NEED
+                        </label>
+                    </fieldset>
+
+                    <button id="save-button" type="submit">记下来</button>
+
+                </form>
             </section>
 
             <section>
