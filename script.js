@@ -2,6 +2,7 @@ const thingInput = document.querySelector("#thing-input");
 const thingForm = document.querySelector("#thing-form");
 const wantList = document.querySelector("#want-list");
 const needList = document.querySelector("#need-list");
+const clearButton = document.querySelector("#clear-button");
 
 const savedThings = localStorage.getItem("things");
 
@@ -54,4 +55,22 @@ thingForm.addEventListener("submit", function (event) {
     displayThing(thing);
 
     thingInput.value = "";
+});
+
+clearButton.addEventListener("click", function () {
+    if (things.length === 0) {
+        return;
+    }
+
+    const shouldClear = confirm("确定要清空全部清单吗？");
+
+    if (!shouldClear) {
+        return;
+    }
+
+    things = [];
+    localStorage.removeItem("things");
+
+    wantList.textContent = "";
+    needList.textContent = "";
 });
