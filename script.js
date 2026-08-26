@@ -16,7 +16,28 @@ console.log(things);
 
 function displayThing(thing) {
         const listItem = document.createElement("li");
-        listItem.textContent = thing.text;
+        const checkbox = document.createElement("input");
+
+        checkbox.type = "checkbox";
+        checkbox.checked = thing.completed;
+
+        listItem.classList.toggle("completed", thing.completed);
+
+        checkbox.addEventListener("change", function () {
+            thing.completed = checkbox.checked;
+
+            listItem.classList.toggle("completed", thing.completed);
+
+            localStorage.setItem(
+                "things",
+                JSON.stringify(things)
+            );
+        });
+
+        listItem.appendChild(checkbox);
+        listItem.appendChild(
+            document.createTextNode(" " + thing.text)
+        );
 
         if (thing.type === "want") {
             wantList.appendChild(listItem);
@@ -45,7 +66,8 @@ thingForm.addEventListener("submit", function (event) {
 
     const thing = {
         text: thingText,
-        type: selectedType
+        type: selectedType,
+        completed: false
     };
 
     things.push(thing);
