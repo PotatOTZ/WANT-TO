@@ -3,7 +3,6 @@ const thingForm = document.querySelector("#thing-form");
 const wantList = document.querySelector("#want-list");
 const needList = document.querySelector("#need-list");
 const clearButton = document.querySelector("#clear-button");
-
 const savedThings = localStorage.getItem("things");
 
 let things = [];
@@ -15,61 +14,94 @@ if (savedThings !== null) {
 console.log(things);
 
 function displayThing(thing) {
-        const listItem = document.createElement("li");
-        const checkbox = document.createElement("input");
-        const reflectionArea = document.createElement("div");
-        const feelingInput = document.createElement("input");
+    const listItem = document.createElement("li");
+    const checkbox = document.createElement("input");
+    const reflectionArea = document.createElement("div");
+    const feelingInput = document.createElement("input");
+    const thingTextElement = document.createElement("span");
+    const deleteButton = document.createElement("button");
 
-        checkbox.type = "checkbox";
-        checkbox.checked = thing.completed;
-        feelingInput.type = "text";
-        feelingInput.placeholder = "感觉如何？";
+    deleteButton.type = "button";
+    deleteButton.textContent = "❌️";
+    deleteButton.classList.add("delete-button");
 
-        feelingInput.value = thing.feeling || "";
+    checkbox.type = "checkbox";
+    checkbox.checked = thing.completed;
+    feelingInput.type = "text";
+    feelingInput.placeholder = "感觉如何？";
+    thingTextElement.textContent = " " + thing.text;
 
-        reflectionArea.appendChild(feelingInput);
+    feelingInput.value = thing.feeling || "";
 
-        listItem.classList.toggle("completed", thing.completed);
+    reflectionArea.appendChild(feelingInput);
+
+    thingTextElement.classList.toggle(
+        "completed",
+        thing.completed
+    );
+    reflectionArea.hidden = !thing.completed;
+
+    checkbox.addEventListener("change", function () {
+        thing.completed = checkbox.checked;
+
+        thingTextElement.classList.toggle(
+            "completed",
+            thing.completed
+        );
         reflectionArea.hidden = !thing.completed;
-
-        checkbox.addEventListener("change", function () {
-            thing.completed = checkbox.checked;
-
-            listItem.classList.toggle("completed", thing.completed);
-            reflectionArea.hidden = !thing.completed;
-
-            localStorage.setItem(
-                "things",
-                JSON.stringify(things)
-            );
-        });
-
-        feelingInput.addEventListener("input", function() {
-        thing.feeling = feelingInput.value;
 
         localStorage.setItem(
             "things",
             JSON.stringify(things)
-            );
-        });
-
-        listItem.appendChild(checkbox);
-        listItem.appendChild(
-            document.createTextNode(" " + thing.text)
         );
-        listItem.appendChild(reflectionArea);
+    });
 
-        if (thing.type === "want") {
-            wantList.appendChild(listItem);
-        }
-        else {
-            needList.appendChild(listItem);
-        }
+    feelingInput.addEventListener("input", function() {
+    thing.feeling = feelingInput.value;
+
+    localStorage.setItem(
+        "things",
+        JSON.stringify(things)
+        );
+    });
+
+    listItem.appendChild(checkbox);
+    listItem.appendChild(thingTextElement);
+    listItem.appendChild(deleteButton);
+    listItem.appendChild(reflectionArea);
+
+    if (thing.type === "want") {
+        wantList.appendChild(listItem);
+    }
+    else {
+        needList.appendChild(listItem);
     }
 
-    things.forEach(function (thing) {
-        displayThing(thing);
+    deleteButton.addEventListener("click", function () {
+        const shouldDelete = confirm(
+            "确定删除“" + thing.text + "”吗？"
+        );
+
+        if (!shouldDelete) {
+            return;
+        }
+
+        const thingIndex = things.indexOf(thing);
+
+        things.splice(thingIndex, 1);
+
+        localStorage.setItem(
+            "things",
+            JSON.stringify(things)
+        );
+
+        listItem.remove();
     });
+}
+
+things.forEach(function (thing) {
+    displayThing(thing);
+});
 
 thingForm.addEventListener("submit", function (event) {
     event.preventDefault();

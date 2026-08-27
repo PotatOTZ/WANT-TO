@@ -56,3 +56,12 @@ button {
     text-decoration: line-through;
     opacity: 0.6;
 }
+
+.delete-button {
+    margin-left: 12px;
+    padding: 4px 8px;
+    font-size: 14px;
+    background-color: transparent;
+    color: inherit;
+    border: 1px solid currentColor;
+}
