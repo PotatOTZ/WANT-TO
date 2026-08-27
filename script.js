@@ -17,16 +17,26 @@ console.log(things);
 function displayThing(thing) {
         const listItem = document.createElement("li");
         const checkbox = document.createElement("input");
+        const reflectionArea = document.createElement("div");
+        const feelingInput = document.createElement("input");
 
         checkbox.type = "checkbox";
         checkbox.checked = thing.completed;
+        feelingInput.type = "text";
+        feelingInput.placeholder = "感觉如何？";
+
+        feelingInput.value = thing.feeling || "";
+
+        reflectionArea.appendChild(feelingInput);
 
         listItem.classList.toggle("completed", thing.completed);
+        reflectionArea.hidden = !thing.completed;
 
         checkbox.addEventListener("change", function () {
             thing.completed = checkbox.checked;
 
             listItem.classList.toggle("completed", thing.completed);
+            reflectionArea.hidden = !thing.completed;
 
             localStorage.setItem(
                 "things",
@@ -34,10 +44,20 @@ function displayThing(thing) {
             );
         });
 
+        feelingInput.addEventListener("input", function() {
+        thing.feeling = feelingInput.value;
+
+        localStorage.setItem(
+            "things",
+            JSON.stringify(things)
+            );
+        });
+
         listItem.appendChild(checkbox);
         listItem.appendChild(
             document.createTextNode(" " + thing.text)
         );
+        listItem.appendChild(reflectionArea);
 
         if (thing.type === "want") {
             wantList.appendChild(listItem);
@@ -67,7 +87,8 @@ thingForm.addEventListener("submit", function (event) {
     const thing = {
         text: thingText,
         type: selectedType,
-        completed: false
+        completed: false,
+        feeling: ""
     };
 
     things.push(thing);
