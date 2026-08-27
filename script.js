@@ -13,6 +13,13 @@ if (savedThings !== null) {
 
 console.log(things);
 
+function saveThings() {
+    localStorage.setItem(
+        "things",
+        JSON.stringify(things)
+    );
+}
+
 function displayThing(thing) {
     const listItem = document.createElement("li");
     const checkbox = document.createElement("input");
@@ -20,6 +27,10 @@ function displayThing(thing) {
     const feelingInput = document.createElement("input");
     const thingTextElement = document.createElement("span");
     const deleteButton = document.createElement("button");
+
+    listItem.classList.add("thing-item");
+    reflectionArea.classList.add("reflection-area");
+    feelingInput.classList.add("feeling-input");
 
     deleteButton.type = "button";
     deleteButton.textContent = "❌️";
@@ -50,19 +61,13 @@ function displayThing(thing) {
         );
         reflectionArea.hidden = !thing.completed;
 
-        localStorage.setItem(
-            "things",
-            JSON.stringify(things)
-        );
+        saveThings();
     });
 
     feelingInput.addEventListener("input", function() {
     thing.feeling = feelingInput.value;
 
-    localStorage.setItem(
-        "things",
-        JSON.stringify(things)
-        );
+    saveThings();
     });
 
     listItem.appendChild(checkbox);
@@ -90,10 +95,7 @@ function displayThing(thing) {
 
         things.splice(thingIndex, 1);
 
-        localStorage.setItem(
-            "things",
-            JSON.stringify(things)
-        );
+        saveThings();
 
         listItem.remove();
     });
@@ -124,7 +126,7 @@ thingForm.addEventListener("submit", function (event) {
     };
 
     things.push(thing);
-    localStorage.setItem("things", JSON.stringify(things));
+    saveThings();
     console.log(things);
 
     displayThing(thing);

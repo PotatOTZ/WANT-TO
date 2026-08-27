@@ -65,3 +65,26 @@ button {
     color: inherit;
     border: 1px solid currentColor;
 }
+
+#want-list,
+#need-list {
+    list-style: none;
+    padding-left: 0;
+}
+
+.thing-item {
+    margin-bottom: 16px;
+    line-height: 1.6;
+}
+
+.reflection-area {
+    margin-top: 10px;
+    margin-left: 26px;
+}
+
+.feeling-input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px;
+    font-size: 15px;
+}
