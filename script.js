@@ -27,6 +27,7 @@ function displayThing(thing) {
     const feelingInput = document.createElement("input");
     const thingTextElement = document.createElement("span");
     const deleteButton = document.createElement("button");
+    const completedTimeElement = document.createElement("small");
 
     listItem.classList.add("thing-item");
     reflectionArea.classList.add("reflection-area");
@@ -42,8 +43,11 @@ function displayThing(thing) {
     feelingInput.placeholder = "感觉如何？";
     thingTextElement.textContent = " " + thing.text;
 
+    completedTimeElement.classList.add("completed-time");
+
     feelingInput.value = thing.feeling || "";
 
+    reflectionArea.appendChild(completedTimeElement);
     reflectionArea.appendChild(feelingInput);
 
     thingTextElement.classList.toggle(
@@ -52,8 +56,41 @@ function displayThing(thing) {
     );
     reflectionArea.hidden = !thing.completed;
 
+    function updateCompletedTime() {
+        if (thing.completedAt) {
+            const completedDate = new Date(thing.completedAt);
+
+            completedTimeElement.textContent =
+            "完成于 " + 
+            completedDate.toLocaleString("zh-CN", {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+                hour: "2-digit",
+                minute: "2-digit"
+            });
+        
+            completedTimeElement.hidden = false;
+        }
+        else {
+            completedTimeElement.textContent = "";
+            completedTimeElement.hidden = true;
+        }
+    }
+
+    updateCompletedTime();
+
     checkbox.addEventListener("change", function () {
         thing.completed = checkbox.checked;
+
+        if (thing.completed) {
+            thing.completedAt = new Date().toISOString();
+        }
+        else {
+            thing.completedAt = null;
+        } 
+
+        updateCompletedTime();
 
         thingTextElement.classList.toggle(
             "completed",
@@ -122,7 +159,8 @@ thingForm.addEventListener("submit", function (event) {
         text: thingText,
         type: selectedType,
         completed: false,
-        feeling: ""
+        feeling: "",
+        completedAt: null
     };
 
     things.push(thing);
