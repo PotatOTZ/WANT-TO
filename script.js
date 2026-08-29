@@ -28,6 +28,7 @@ function displayThing(thing) {
     const thingTextElement = document.createElement("span");
     const deleteButton = document.createElement("button");
     const completedTimeElement = document.createElement("small");
+    const moodSelect = document.createElement("select");
 
     listItem.classList.add("thing-item");
     reflectionArea.classList.add("reflection-area");
@@ -45,9 +46,31 @@ function displayThing(thing) {
 
     completedTimeElement.classList.add("completed-time");
 
+    moodSelect.classList.add("mood-select");
+    const moodOptions = [
+        { value: "", label: "选择此刻的感受……" },
+        { value: "energized", label: "更有精神" },
+        { value: "calm", label: "平静" },
+        { value: "happy", label: "开心" },
+        { value: "neutral", label: "没什么变化" },
+        { value: "tired", label: "有些疲惫" },
+        { value: "unclear", label: "说不清" }
+    ];
+
+    moodOptions.forEach(function (mood) {
+        const option = document.createElement("option");
+
+        option.value = mood.value;
+        option.textContent = mood.label;
+
+        moodSelect.appendChild(option);
+    });
+    moodSelect.value = thing.mood || "";
+
     feelingInput.value = thing.feeling || "";
 
     reflectionArea.appendChild(completedTimeElement);
+    reflectionArea.appendChild(moodSelect);
     reflectionArea.appendChild(feelingInput);
 
     thingTextElement.classList.toggle(
@@ -88,6 +111,11 @@ function displayThing(thing) {
         }
         else {
             thing.completedAt = null;
+            thing.mood = "";
+            thing.feeling = "";
+
+            moodSelect.value = "";
+            feelingInput.value = "";
         } 
 
         updateCompletedTime();
@@ -102,9 +130,15 @@ function displayThing(thing) {
     });
 
     feelingInput.addEventListener("input", function() {
-    thing.feeling = feelingInput.value;
+        thing.feeling = feelingInput.value;
 
-    saveThings();
+        saveThings();
+    });
+
+    moodSelect.addEventListener("change", function () {
+        thing.mood = moodSelect.value;
+
+        saveThings();
     });
 
     listItem.appendChild(checkbox);
@@ -160,6 +194,7 @@ thingForm.addEventListener("submit", function (event) {
         type: selectedType,
         completed: false,
         feeling: "",
+        mood: "",
         completedAt: null
     };
 
