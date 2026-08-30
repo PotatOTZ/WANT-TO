@@ -102,3 +102,8 @@ button {
     padding: 10px;
     font-size: 15px;
 }
+
+.empty-message {
+    opacity: 0.65;
+    font-style: italic;
+}

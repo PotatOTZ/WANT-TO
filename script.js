@@ -4,6 +4,8 @@ const wantList = document.querySelector("#want-list");
 const needList = document.querySelector("#need-list");
 const clearButton = document.querySelector("#clear-button");
 const savedThings = localStorage.getItem("things");
+const wantEmpty = document.querySelector("#want-empty");
+const needEmpty = document.querySelector("#need-empty");
 
 let things = [];
 
@@ -18,6 +20,11 @@ function saveThings() {
         "things",
         JSON.stringify(things)
     );
+}
+
+function updateEmptyStates() {
+    wantEmpty.hidden = wantList.children.length > 0;
+    needEmpty.hidden = needList.children.length > 0;
 }
 
 function displayThing(thing) {
@@ -145,6 +152,7 @@ function displayThing(thing) {
     listItem.appendChild(thingTextElement);
     listItem.appendChild(deleteButton);
     listItem.appendChild(reflectionArea);
+    
 
     if (thing.type === "want") {
         wantList.appendChild(listItem);
@@ -152,6 +160,8 @@ function displayThing(thing) {
     else {
         needList.appendChild(listItem);
     }
+
+    updateEmptyStates();
 
     deleteButton.addEventListener("click", function () {
         const shouldDelete = confirm(
@@ -169,12 +179,15 @@ function displayThing(thing) {
         saveThings();
 
         listItem.remove();
+        updateEmptyStates();
     });
 }
 
 things.forEach(function (thing) {
     displayThing(thing);
 });
+
+updateEmptyStates();
 
 thingForm.addEventListener("submit", function (event) {
     event.preventDefault();
@@ -223,4 +236,6 @@ clearButton.addEventListener("click", function () {
 
     wantList.textContent = "";
     needList.textContent = "";
+
+    updateEmptyStates();
 });
