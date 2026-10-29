@@ -1,2 +1,22 @@
 # WANT-TO
-A gentle space for noticing what I want to do and how it makes me feel.
+一个记录自己生活的尝试。  
+
+## WHY?  
+想要留下生活的痕迹和感受。  
+
+## 当前功能 
+- 记录 WANT 和 NEED
+- 标记完成状态  
+- 记录完成时间  
+- 选择并填写完成后的感受  
+- 在浏览器中保存数据  
+- 删除单项或清空全部  
+
+## 使用的技术  
+- HTML  
+- CSS
+- JavaScript  
+- localStorage  
+
+## 当前状态  
+非常粗糙的 v0 😴
