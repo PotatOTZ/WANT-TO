@@ -6,14 +6,50 @@ const clearButton = document.querySelector("#clear-button");
 const savedThings = localStorage.getItem("things");
 const wantEmpty = document.querySelector("#want-empty");
 const needEmpty = document.querySelector("#need-empty");
+const currentDateElement = document.querySelector("#current-date");
+const previousDayButton = document.querySelector("#previous-day");
+const nextDayButton = document.querySelector("#next-day");
 
 let things = [];
+let selectedDate = new Date();
 
 if (savedThings !== null) {
     things = JSON.parse(savedThings);
 }
 
 console.log(things);
+
+function updateDateDisplay() {
+    currentDateElement.textContent =
+        selectedDate.toLocaleDateString("zh-CN", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+            weekday: "long"
+        });
+
+    const todayKey = getDateKey(new Date());
+    const selectedDateKey = getDateKey(selectedDate);
+
+    nextDayButton.disabled = 
+        selectedDateKey === todayKey;
+}
+
+updateDateDisplay();
+
+function getDateKey(date) {
+    const year = date.getFullYear();
+
+    const month = String(
+        date.getMonth() + 1
+    ).padStart(2, "0");
+
+    const day = String(
+        date.getDate()
+    ).padStart(2, "0");
+
+    return `${year}-${month}-${day}`;
+}
 
 function saveThings() {
     localStorage.setItem(
@@ -183,11 +219,48 @@ function displayThing(thing) {
     });
 }
 
-things.forEach(function (thing) {
-    displayThing(thing);
-});
+function renderSelectedDate() {
+    wantList.textContent = "";
+    needList.textContent = "";
 
-updateEmptyStates();
+    const selectedDateKey = getDateKey(selectedDate);
+
+    const selectedThings = things.filter(function (thing) {
+        return thing.date === selectedDateKey;
+    });
+
+    selectedThings.forEach(function (thing) {
+        displayThing(thing);
+    });
+
+    updateEmptyStates();
+}
+
+renderSelectedDate();
+
+previousDayButton.addEventListener(
+    "click",
+    function () {
+        selectedDate.setDate(
+            selectedDate.getDate() - 1
+        );
+
+        updateDateDisplay();
+        renderSelectedDate();
+    }
+);
+
+nextDayButton.addEventListener(
+    "click",
+    function () {
+        selectedDate.setDate(
+            selectedDate.getDate() + 1
+        );
+
+        updateDateDisplay();
+        renderSelectedDate();
+    }
+);
 
 thingForm.addEventListener("submit", function (event) {
     event.preventDefault();
@@ -205,6 +278,7 @@ thingForm.addEventListener("submit", function (event) {
     const thing = {
         text: thingText,
         type: selectedType,
+        date: getDateKey(selectedDate),
         completed: false,
         feeling: "",
         mood: "",
@@ -215,7 +289,7 @@ thingForm.addEventListener("submit", function (event) {
     saveThings();
     console.log(things);
 
-    displayThing(thing);
+    renderSelectedDate();
 
     thingInput.value = "";
 });
