@@ -19,4 +19,5 @@
 - localStorage  
 
 ## 当前状态  
-非常粗糙的 v0 😴
+非常粗糙的 v0 😴  
+[DEMO](https://potatotz.github.io/WANT-TO/)
